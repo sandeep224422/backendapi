@@ -13,20 +13,52 @@ A powerful and secure API service built with NestJS for downloading videos from 
 - 📈 Usage Analytics
 - 🚀 Swagger API Documentation
 
-## Supported Platforms
+## Supported Platforms & Features
 
-- YouTube
-- Facebook
-- Instagram
-- TikTok
-- Twitter
+### YouTube
+
+- Video downloads with quality selection
+- Playlist support
+- Format conversion (MP4, MKV, WEBM)
+- Audio extraction (MP3, M4A)
+- Thumbnail downloads
+- Metadata extraction
+
+### Facebook
+
+- Public video downloads
+- Private video support (with authentication)
+- HD quality support
+- Story downloads
+
+### Instagram
+
+- Post videos
+- Reels
+- Stories (with authentication)
+- IGTV videos
+
+### TikTok
+
+- Single video downloads
+- Without watermark support
+- Music extraction
+- Metadata support
+
+### Twitter
+
+- Tweet videos
+- Spaces recordings
+- GIF downloads
+- Multiple quality options
 
 ## Prerequisites
 
 - Node.js (v16 or higher)
 - PostgreSQL
 - pnpm
-- yt-dlp (for video downloading)
+- yt-dlp (auto-installed)
+- ffmpeg (auto-installed if not present)
 
 ## Project Setup
 
@@ -62,6 +94,143 @@ pnpm prisma generate
 # Run database migrations
 pnpm prisma migrate dev
 ```
+
+## Automatic Binary Management
+
+The service automatically handles the installation and updates of required binaries:
+
+- **yt-dlp**: Latest version auto-downloaded based on OS
+- **ffmpeg**: System version used if available, otherwise downloaded
+- Supported platforms: Windows (32/64-bit), macOS, Linux
+- Auto-updates on application restart
+
+## URL Validation & Processing
+
+The service includes comprehensive URL validation for all supported platforms:
+
+```typescript
+// Example URL validation
+const videoUrl = 'https://www.youtube.com/watch?v=...';
+const result = await validateUrl(videoUrl, Platform.YOUTUBE);
+```
+
+Supported URL patterns:
+
+- YouTube: Regular videos, Shorts, Playlists
+- Facebook: Posts, Watch, Stories
+- Instagram: Posts, Reels, IGTV
+- TikTok: Regular posts, Music
+- Twitter: Tweets, Spaces
+
+## Download Options
+
+### Basic Download
+
+```typescript
+const options = {
+  quality: 'highest',
+  format: 'mp4',
+  output: './downloads',
+};
+```
+
+### Advanced Options
+
+```typescript
+const options = {
+  quality: '1080p',
+  format: 'mp4',
+  output: {
+    outDir: './downloads',
+    fileName: 'custom-name.mp4',
+  },
+  audioOnly: false,
+  maxDuration: 1800, // 30 minutes
+  convertTo: 'webm',
+};
+```
+
+## Type System
+
+The API includes comprehensive TypeScript definitions:
+
+```typescript
+// Platform Types
+type Platform = 'youtube' | 'facebook' | 'instagram' | 'tiktok' | 'twitter';
+
+// Download Options
+interface DownloadOptions<T extends Platform> {
+  quality?: Quality;
+  format?: Format;
+  output?: OutputOptions;
+  // ... more options
+}
+
+// Progress Tracking
+interface ProgressType {
+  status: DownloadStatus;
+  percentage: number;
+  downloaded: number;
+  total: number;
+  speed: number;
+  eta: number;
+}
+```
+
+## Project Structure
+
+```
+src/
+├── classes/
+│   └── VideoDownload.ts     # Core download functionality
+├── lib/
+│   ├── helper.ts           # Utility functions
+│   ├── config.ts          # Configuration management
+│   └── utils.ts           # Common utilities
+├── modules/
+│   ├── auth/              # Authentication & API key management
+│   ├── download/          # Download controllers & services
+│   └── ytdlp/            # yt-dlp integration
+├── types/
+│   ├── youtube.ts        # YouTube specific types
+│   ├── facebook.ts       # Facebook specific types
+│   └── instagram.ts      # Instagram specific types
+└── validate/
+    ├── url.ts           # URL validation logic
+    └── schema.ts        # Validation schemas
+```
+
+## Error Handling
+
+The API implements comprehensive error handling:
+
+- URL validation errors
+- Download failures
+- Format conversion issues
+- Rate limiting errors
+- Authentication failures
+
+Example error responses:
+
+```json
+{
+  "statusCode": 400,
+  "message": "Invalid URL format",
+  "error": "Bad Request"
+}
+```
+
+## Rate Limiting
+
+Default limits per API key:
+
+- 100 requests per minute
+- Maximum video duration: 30 minutes
+- Configurable per user/key
+- Headers included in response:
+  - `X-RateLimit-Limit`
+  - `X-RateLimit-Remaining`
+  - `X-RateLimit-Reset`
 
 ## Running the Application
 
