@@ -13,6 +13,67 @@ A powerful and secure API service built with NestJS for downloading videos from 
 - 📈 Usage Analytics
 - 🚀 Swagger API Documentation
 
+## Frontend Client
+
+This API is designed to work seamlessly with the [Social Media Video Downloader](https://github.com/fabwaseem/Social-Media-Video-Downloader) frontend client.
+
+### Frontend Features
+
+- 🎨 Modern UI built with Next.js 14
+- 🎭 Dark/Light theme support
+- 📱 Fully responsive design
+- ⚡ Server-side rendering
+- 🔄 Real-time download progress
+- 📊 Download history tracking
+- 🎛️ Quality selection interface
+- 🎯 Easy platform selection
+
+### Frontend Setup
+
+1. Clone the frontend repository:
+
+```bash
+git clone https://github.com/fabwaseem/Social-Media-Video-Downloader.git
+cd Social-Media-Video-Downloader
+```
+
+2. Install dependencies:
+
+```bash
+pnpm install
+```
+
+3. Configure environment variables:
+   Create a `.env.local` file with:
+
+```env
+NEXT_PUBLIC_API_URL=http://localhost:3001
+NEXT_PUBLIC_API_KEY=your_api_key
+```
+
+4. Run the development server:
+
+```bash
+pnpm dev
+```
+
+The frontend will be available at `http://localhost:3000`
+
+### Integration Steps
+
+1. Ensure this backend API is running
+2. Update the frontend's `.env.local` with your API key
+3. Configure CORS in backend's `.env`:
+
+```env
+ALLOWED_ORIGINS="http://localhost:3000,your-production-domain.com"
+```
+
+4. For production deployment:
+   - Deploy this backend API
+   - Update frontend's environment variables with production API URL
+   - Deploy frontend to your preferred platform (Vercel recommended)
+
 ## Supported Platforms & Features
 
 ### YouTube
