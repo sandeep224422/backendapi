@@ -17,6 +17,6 @@
     }
   },
   "scripts": {
-    "postdeploy": "npm run prepare"
+    "postdeploy": "npm run db:migrate"
   }
 }
