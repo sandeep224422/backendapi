@@ -1,0 +1,25 @@
+{
+  "name": "social-media-video-downloader-api",
+  "description": "NestJS API for downloading videos from social media platforms",
+  "repository": "https://github.com/yourusername/social-media-video-downloader-api",
+  "buildpacks": [
+    {
+      "url": "heroku/nodejs"
+    },
+    {
+      "url": "heroku/python"
+    }
+  ],
+  "env": {
+    "NODE_ENV": "production"
+  },
+  "formation": {
+    "web": {
+      "quantity": 1,
+      "size": "basic"
+    }
+  },
+  "scripts": {
+    "postdeploy": "npm run prepare"
+  }
+}
